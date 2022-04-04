@@ -38,5 +38,6 @@
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "jestrunner.jestCommand": "npm test"
 }

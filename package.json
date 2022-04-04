@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "ts-node": "ts-node",
-    "tsc": "tsc",
     "clean:tsc": "rm tsconfig.tsbuildinfo",
-    "test": "jest"
+    "tsc": "tsc",
+    "test": "npm run tsc -- --noEmit && jest"
   },
   "keywords": [],
   "author": "",
