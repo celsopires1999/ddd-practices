@@ -30,12 +30,6 @@ describe("Customer Unit Tests", () => {
     expect(entity.name).toBe("Customer Name");
   });
 
-  it("should change customer name", () => {
-    const entity = new Customer({ id: "123", name: "Customer Name" });
-    entity.changeName("New Customer Name");
-    expect(entity.name).toBe("New Customer Name");
-  });
-
   it("should not change customer name", () => {
     const entity = new Customer({ id: "123", name: "Customer Name" });
     try {
@@ -43,6 +37,12 @@ describe("Customer Unit Tests", () => {
     } catch (error) {
       expect(entity.name).toBe("Customer Name");
     }
+  });
+
+  it("should change customer name", () => {
+    const entity = new Customer({ id: "123", name: "Customer Name" });
+    entity.changeName("New Customer Name");
+    expect(entity.name).toBe("New Customer Name");
   });
 
   it("should activate a customer", () => {
@@ -69,5 +69,16 @@ describe("Customer Unit Tests", () => {
     expect(() => entity.activate()).toThrowError(
       "Address is required to activate a customer"
     );
+  });
+
+  it("should add reward points", () => {
+    const entity = new Customer({ id: "123", name: "Customer Name" });
+    expect(entity.rewardPoints).toBe(0);
+
+    entity.addRewardPoints(10);
+    expect(entity.rewardPoints).toBe(10);
+
+    entity.addRewardPoints(10);
+    expect(entity.rewardPoints).toBe(20);
   });
 });

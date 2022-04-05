@@ -8,6 +8,8 @@ export interface CustomerProperties {
 }
 
 export default class Customer {
+  private _rewardPoints: number = 0;
+
   constructor(public readonly props: CustomerProperties) {
     this.validate();
   }
@@ -32,6 +34,10 @@ export default class Customer {
     this.props.address = address;
   }
 
+  get rewardPoints(): number {
+    return this._rewardPoints;
+  }
+
   changeName(name: string) {
     if (!name || name.length === 0) {
       throw new Error("Name is required");
@@ -48,6 +54,10 @@ export default class Customer {
 
   deactivate() {
     this.props.active = false;
+  }
+
+  addRewardPoints(points: number) {
+    this._rewardPoints += points;
   }
 
   private validate() {
