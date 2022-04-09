@@ -9,9 +9,14 @@ export default class Product {
     Product.validate(props);
   }
 
+  get id(): string {
+    return this.props.id;
+  }
+
   get name(): string {
     return this.props.name;
   }
+
   get price(): number {
     return this.props.price;
   }
