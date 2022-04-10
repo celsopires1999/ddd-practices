@@ -19,6 +19,22 @@ export default class Address {
     };
   }
 
+  get street(): string {
+    return this.props.street;
+  }
+
+  get number(): number {
+    return this.props.number;
+  }
+
+  get zip(): string {
+    return this.props.zip;
+  }
+
+  get city(): string {
+    return this.props.city;
+  }
+
   private validate() {
     if (!this.props.street || this.props.street.length === 0) {
       throw new Error("street is required");

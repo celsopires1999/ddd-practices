@@ -30,7 +30,7 @@ describe("Customer Unit Tests", () => {
     expect(entity.name).toBe("Customer Name");
   });
 
-  it("should not change customer name", () => {
+  it("should not change customer name with invalid value", () => {
     const entity = new Customer({ id: "123", name: "Customer Name" });
     try {
       entity.changeName("");
@@ -53,7 +53,7 @@ describe("Customer Unit Tests", () => {
       zip: "55555",
       city: "City Test",
     });
-    entity.address = address;
+    entity.changeAddress(address);
     entity.activate();
     expect(entity.isActive).toBeTruthy();
   });
@@ -69,6 +69,61 @@ describe("Customer Unit Tests", () => {
     expect(() => entity.activate()).toThrowError(
       "Address is required to activate a customer"
     );
+  });
+
+  it("should throw an error on change address to invalid values when customer is active", () => {
+    const entity = new Customer({ id: "123", name: "Customer Name" });
+    const address = new Address({
+      street: "Test street",
+      number: 333,
+      zip: "55555",
+      city: "City Test",
+    });
+    entity.changeAddress(address);
+    entity.activate();
+
+    expect(() => entity.changeAddress(null)).toThrowError(
+      "Address is mandatory when customer is active"
+    );
+    expect(() => entity.changeAddress(undefined)).toThrowError(
+      "Address is mandatory when customer is active"
+    );
+    expect(() => entity.changeAddress("" as any)).toThrowError(
+      "Address is mandatory when customer is active"
+    );
+    expect(() => entity.changeAddress("Fake Address" as any)).toThrowError(
+      "Address value is invalid"
+    );
+  });
+
+  it("should throw an error on remove address when customer is active", () => {
+    const entity = new Customer({ id: "123", name: "Customer Name" });
+    const address = new Address({
+      street: "Test street",
+      number: 333,
+      zip: "55555",
+      city: "City Test",
+    });
+    entity.changeAddress(address);
+    entity.activate();
+
+    expect(() => entity.removeAddress()).toThrowError(
+      "Address cannot be removed when customer is active"
+    );
+  });
+
+  it("should remove address when customer is inactive", () => {
+    const entity = new Customer({ id: "123", name: "Customer Name" });
+    const address = new Address({
+      street: "Test street",
+      number: 333,
+      zip: "55555",
+      city: "City Test",
+    });
+    entity.changeAddress(address);
+    entity.deactivate();
+    entity.removeAddress();
+    expect(entity.address).toBeNull();
   });
 
   it("should add reward points", () => {

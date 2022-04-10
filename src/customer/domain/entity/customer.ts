@@ -30,12 +30,27 @@ export default class Customer {
     return this.props.active;
   }
 
-  set address(address: Address) {
+  get rewardPoints(): number {
+    return this._rewardPoints;
+  }
+
+  changeAddress(address: Address) {
+    if (!address && this.props.active) {
+      throw new Error("Address is mandatory when customer is active");
+    }
+    if (!(address instanceof Address)) {
+      throw new Error("Address value is invalid");
+    }
+
     this.props.address = address;
   }
 
-  get rewardPoints(): number {
-    return this._rewardPoints;
+  removeAddress() {
+    if (this.props.active) {
+      throw new Error("Address cannot be removed when customer is active");
+    }
+
+    this.props.address = null;
   }
 
   changeName(name: string) {

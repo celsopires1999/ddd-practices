@@ -12,7 +12,7 @@ describe("Order Integration Tests", () => {
       zip: "55555",
       city: "New City",
     });
-    customer.address = address;
+    customer.changeAddress(address);
     customer.activate();
 
     const arrange: OrderItemProperties[] = [
