@@ -11,8 +11,16 @@ export default class Order {
     Order.validate(props);
   }
 
+  get id(): string {
+    return this.props.id;
+  }
+
   get items(): OrderItem[] {
     return this.props.items;
+  }
+
+  get customerId(): string {
+    return this.props.customerId;
   }
 
   static validate(props: OrderProperties) {

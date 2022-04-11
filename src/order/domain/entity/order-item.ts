@@ -11,6 +11,26 @@ export default class OrderItem {
     OrderItem.validate(props);
   }
 
+  get id(): string {
+    return this.props.id;
+  }
+
+  get name(): string {
+    return this.props.name;
+  }
+
+  get price(): number {
+    return this.props.price;
+  }
+
+  get quantity(): number {
+    return this.props.quantity;
+  }
+
+  get productId(): string {
+    return this.props.productId;
+  }
+
   get subTotal(): number {
     return this.props.price * this.props.quantity;
   }
