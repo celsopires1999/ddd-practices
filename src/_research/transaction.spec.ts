@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize-typescript";
-import User from "./user-model";
+import UserModel from "./user-model";
 
 describe("test", () => {
   let sequelize: Sequelize;
@@ -11,7 +11,7 @@ describe("test", () => {
       logging: false,
       sync: { force: true },
     });
-    sequelize.addModels([User]);
+    sequelize.addModels([UserModel]);
     await sequelize.sync();
   });
 
@@ -21,25 +21,34 @@ describe("test", () => {
 
   test("test", async () => {
     // First, we start a transaction and save it into a variable
-    const t = await sequelize.transaction();
+    const transaction = await sequelize.transaction();
 
     try {
       // Then, we do some calls passing this transaction as an option:
 
-      const user = await User.create(
+      const user1 = await UserModel.create(
         {
-          name: "Bart",
+          name: "Suzane",
         },
-        { transaction: t }
+        { transaction }
       );
+
+      const user2 = await UserModel.create(
+        {
+          name: "Gauthinho",
+        },
+        { transaction }
+      );
+
+      console.log(`I have created two users: ${user1.name} and ${user2.name}`);
 
       // If the execution reaches this line, no errors were thrown.
       // We commit the transaction.
-      await t.commit();
+      await transaction.commit();
     } catch (error) {
       // If the execution reaches this line, an error was thrown.
       // We rollback the transaction.
-      await t.rollback();
+      await transaction.rollback();
     }
   });
 });

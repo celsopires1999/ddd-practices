@@ -34,62 +34,68 @@ export default class OrderRepository implements OrderRepositoryInterface {
   }
 
   async update(entity: Order): Promise<void> {
-    let affectedCount: any;
-
-    const currentItems = await OrderItemModel.findAll({
-      where: { order_id: entity.id },
-    });
-
-    currentItems.forEach(async (currentItem) => {
-      const foundItem = entity.items.find((item) => item.id === currentItem.id);
-      if (foundItem) {
-        await currentItem.update({
-          name: foundItem.name,
-          price: foundItem.price,
-          product_id: foundItem.productId,
-          quantity: foundItem.quantity,
-        });
-      } else {
-        await currentItem.destroy();
-      }
-    });
-
-    entity.items.forEach(async (item) => {
-      const updatedItem = currentItems.findIndex(
-        (currentItem) => currentItem.id === item.id
-      );
-      if (updatedItem === -1) {
-        await OrderItemModel.create({
-          id: item.id,
-          order_id: entity.id,
-          name: item.name,
-          price: item.price,
-          product_id: item.productId,
-          quantity: item.quantity,
-        });
-      }
-    });
+    let orderModel: OrderModel;
 
     try {
-      affectedCount = await OrderModel.update(
-        {
-          id: entity.id,
-          customer_id: entity.customerId,
-          total: entity.total(),
-        },
-        {
-          where: {
-            id: entity.id,
+      await this.sequelize.transaction(async (transaction) => {
+        orderModel = await OrderModel.findOne({
+          where: { id: entity.id },
+          transaction,
+          rejectOnEmpty: true,
+          include: [CustomerModel, OrderItemModel],
+        });
+
+        await orderModel.update(
+          {
+            customer_id: entity.customerId,
+            total: entity.total(),
           },
+          {
+            transaction,
+          }
+        );
+
+        for (const currentItem of orderModel.items) {
+          const foundItem = entity.items.find(
+            (item) => item.id === currentItem.id
+          );
+          if (foundItem) {
+            await currentItem.update(
+              {
+                name: foundItem.name,
+                price: foundItem.price,
+                product_id: foundItem.productId,
+                quantity: foundItem.quantity,
+              },
+              { transaction }
+            );
+          } else {
+            await currentItem.destroy({ transaction });
+          }
         }
-      );
+
+        for (const item of entity.items) {
+          const updatedItem = orderModel.items.findIndex(
+            (currentItem) => currentItem.id === item.id
+          );
+          if (updatedItem === -1) {
+            await OrderItemModel.create(
+              {
+                id: item.id,
+                order_id: entity.id,
+                name: item.name,
+                price: item.price,
+                product_id: item.productId,
+                quantity: item.quantity,
+              },
+              { transaction }
+            );
+          }
+        }
+      });
     } catch (e) {
       console.log(e);
       throw new Error(`Error by updating an OrderModel: ${entity.id}`);
-    }
-
-    if (affectedCount[0] === 0) {
-      throw new Error(`OrderModel not found on updating: ${entity.id}`);
     }
   }
 
