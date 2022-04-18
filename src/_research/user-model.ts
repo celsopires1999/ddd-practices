@@ -4,7 +4,7 @@ import { Column, Model, PrimaryKey, Table } from "sequelize-typescript";
   tableName: "users",
   timestamps: false,
 })
-export default class User extends Model {
+export default class UserModel extends Model {
   @PrimaryKey
   @Column
   declare id: string;
