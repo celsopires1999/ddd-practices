@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "description": "DDD Modelagem Tática e Patterns",
   "main": "index.js",
+  "imports": {
+    "#seedwork/*": "./dist/seedwork/*.js",
+    "#customer/*": "./dist/customer/*.js",
+    "#order/*": "./dist/order/*.js",
+    "#product/*": "./dist/product/*.js"
+  },
   "scripts": {
     "ts-node": "ts-node",
     "clean:tsc": "rm tsconfig.tsbuildinfo",

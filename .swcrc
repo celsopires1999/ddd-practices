@@ -7,6 +7,13 @@
     "transform": {
       "legacyDecorator": true,
       "decoratorMetadata": true
+    },
+    "baseUrl": "./src",
+    "paths": {
+      "#seedwork/*": ["./@seedwork/*"],
+      "#customer/*": ["./customer/*"],
+      "#order/*": ["./order/*"],
+      "#product/*": ["./product/*"]
     }
   }
 }

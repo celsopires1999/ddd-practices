@@ -1,15 +1,15 @@
+import Customer from "#customer/domain/entity/customer";
+import CustomerModel from "#customer/infra/db/sequelize/model/customer.model";
+import CustomerRepository from "#customer/infra/db/sequelize/repository/customer.repository";
+import Order from "#order/domain/entity/order";
+import OrderItem from "#order/domain/entity/order-item";
+import OrderItemModel from "#order/infra/db/sequelize/model/order-item.model";
+import OrderModel from "#order/infra/db/sequelize/model/order.model";
+import Product from "#product/domain/entity/product";
+import ProductModel from "#product/infra/db/sequelize/model/product.model";
+import ProductRepository from "#product/infra/db/sequelize/repository//product.repository";
+import Address from "#seedwork/domain/value-objects/address.vo";
 import { Sequelize } from "sequelize-typescript";
-import Address from "../../../../../@seedwork/domain/value-objects/address.vo";
-import Customer from "../../../../../customer/domain/entity/customer";
-import CustomerModel from "../../../../../customer/infra/db/sequelize/model/customer.model";
-import CustomerRepository from "../../../../../customer/infra/db/sequelize/repository/customer.repository";
-import Order from "../../../../../order/domain/entity/order";
-import OrderItem from "../../../../../order/domain/entity/order-item";
-import Product from "../../../../../product/domain/entity/product";
-import ProductModel from "../../../../../product/infra/db/sequelize/model/product.model";
-import ProductRepository from "../../../../../product/infra/db/sequelize/repository//product.repository";
-import OrderItemModel from "../model/order-item.model";
-import OrderModel from "../model/order.model";
 import OrderRepository from "./order.repository";
 
 describe("Order Repository Test", () => {
@@ -75,7 +75,7 @@ describe("Order Repository Test", () => {
     await createTwoFirstProducts();
     const order = await createOrder("order-1", "order-item-1", "order-item-2");
     await createSecondCustomer();
-    const orderRepository = new OrderRepository(sequelize);
+    const orderRepository = new OrderRepository();
     await orderRepository.update(order);
 
     const orderModel = await OrderModel.findOne({
@@ -124,7 +124,7 @@ describe("Order Repository Test", () => {
     });
 
     order.props.items = [orderItem3];
-    const orderRepository = new OrderRepository(sequelize);
+    const orderRepository = new OrderRepository();
     await orderRepository.update(order);
 
     const orderModel = await OrderModel.findOne({
@@ -153,7 +153,7 @@ describe("Order Repository Test", () => {
     await createFirstCustomer();
     await createTwoFirstProducts();
     const order = await createOrder("order-1", "order-item-1", "order-item-2");
-    const orderRepository = new OrderRepository(sequelize);
+    const orderRepository = new OrderRepository();
     const foundOrder = await orderRepository.find(order.id);
     expect(foundOrder).toStrictEqual(order);
   });
@@ -169,7 +169,7 @@ describe("Order Repository Test", () => {
       );
     }
 
-    const orderRepository = new OrderRepository(sequelize);
+    const orderRepository = new OrderRepository();
     const orders = await orderRepository.findAll();
     expect(orders.length).toEqual(10);
     expect(orders).toStrictEqual(createdOrders);
@@ -259,7 +259,7 @@ describe("Order Repository Test", () => {
       customerId: "customer-1",
       items: [orderItem1, orderItem2],
     });
-    const orderRepository = new OrderRepository(sequelize);
+    const orderRepository = new OrderRepository();
     await orderRepository.create(order);
 
     return order;

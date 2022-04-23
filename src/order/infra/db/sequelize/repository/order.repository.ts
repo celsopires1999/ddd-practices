@@ -1,13 +1,10 @@
-import { Sequelize } from "sequelize-typescript";
-import CustomerModel from "../../../../../customer/infra/db/sequelize/model/customer.model";
-import Order from "../../../../../order/domain/entity/order";
-import OrderItem from "../../../../../order/domain/entity/order-item";
-import OrderRepositoryInterface from "../../../../../order/domain/repository/order-repository.interface";
-import OrderItemModel from "../model/order-item.model";
-import OrderModel from "../model/order.model";
+import CustomerModel from "#customer/infra/db/sequelize/model/customer.model";
+import Order from "#order/domain/entity/order";
+import OrderItem from "#order/domain/entity/order-item";
+import OrderRepositoryInterface from "#order/domain/repository/order-repository.interface";
+import OrderItemModel from "#order/infra/db/sequelize/model/order-item.model";
+import OrderModel from "#order/infra/db/sequelize/model/order.model";
 export default class OrderRepository implements OrderRepositoryInterface {
-  constructor(private sequelize: Sequelize) {}
-
   async create(entity: Order): Promise<void> {
     try {
       await OrderModel.create(
@@ -35,9 +32,10 @@ export default class OrderRepository implements OrderRepositoryInterface {
 
   async update(entity: Order): Promise<void> {
     let orderModel: OrderModel;
+    const sequelize = OrderModel.sequelize;
 
     try {
-      await this.sequelize.transaction(async (transaction) => {
+      await sequelize.transaction(async (transaction) => {
         orderModel = await OrderModel.findOne({
           where: { id: entity.id },
           transaction,
