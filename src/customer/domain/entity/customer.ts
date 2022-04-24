@@ -1,4 +1,5 @@
-import Address from "../../../@seedwork/domain/value-objects/address.vo";
+import Address from "#seedwork/domain/value-objects/address.vo";
+import CustomerInterface from "./customer.interface";
 
 export interface CustomerProperties {
   id: string;
@@ -7,7 +8,7 @@ export interface CustomerProperties {
   active?: boolean;
 }
 
-export default class Customer {
+export default class Customer implements CustomerInterface {
   private _rewardPoints: number = 0;
 
   constructor(public readonly props: CustomerProperties) {
