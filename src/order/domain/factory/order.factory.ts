@@ -1,9 +1,8 @@
-import OrderInterface from "#order/domain/entity/order.interface";
 import OrderItem from "#order/domain/entity/order-item";
 import Order from "#order/domain/entity/order";
 
 export default class OrderFactory {
-  public static create(props: OrderFactoryProps): OrderInterface {
+  public static create(props: OrderFactoryProps): Order {
     const items = props.items.map(
       (item) =>
         new OrderItem({

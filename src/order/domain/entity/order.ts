@@ -1,5 +1,4 @@
 import OrderItem from "./order-item";
-import OrderInterface from "./order.interface";
 
 export interface OrderProperties {
   id: string;
@@ -7,7 +6,7 @@ export interface OrderProperties {
   items: OrderItem[];
 }
 
-export default class Order implements OrderInterface {
+export default class Order {
   constructor(public readonly props: OrderProperties) {
     Order.validate(props);
   }

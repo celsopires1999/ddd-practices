@@ -1,4 +1,5 @@
 import Address from "#seedwork/domain/value-objects/address.vo";
+import Customer from "../entity/customer";
 import CustomerFactory from "./customer.factory";
 
 describe("Customer Factory Unit Tests", () => {
@@ -21,5 +22,6 @@ describe("Customer Factory Unit Tests", () => {
     expect(customer.id).toBeDefined();
     expect(customer.name).toBe("John");
     expect(customer.address).toStrictEqual(address);
+    expect(customer).toBeInstanceOf(Customer);
   });
 });
