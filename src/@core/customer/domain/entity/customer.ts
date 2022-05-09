@@ -12,6 +12,7 @@ export default class Customer {
 
   constructor(public readonly props: CustomerProperties) {
     this.validate();
+    this.isActive = props.active;
   }
 
   get id() {
@@ -28,6 +29,10 @@ export default class Customer {
 
   get isActive() {
     return this.props.active;
+  }
+
+  private set isActive(active: boolean) {
+    this.props.active = active ? true : false;
   }
 
   get rewardPoints(): number {
