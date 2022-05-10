@@ -36,4 +36,52 @@ describe("Customer E2E Tests", () => {
     });
     expect(response.status).toBe(500);
   });
+
+  it("should list all customers", async () => {
+    const arrange = [
+      {
+        name: "John",
+        address: {
+          street: "New John Street",
+          number: 101,
+          city: "New John City",
+          zip: "10101-101",
+        },
+      },
+      {
+        name: "Jane",
+        address: {
+          street: "New Jane Street",
+          number: 202,
+          city: "New Jane City",
+          zip: "20202-202",
+        },
+      },
+    ];
+
+    for (const item of arrange) {
+      const response = await request(app).post("/customer").send(item);
+      expect(response.status).toBe(200);
+    }
+
+    const listResponse = await request(app).get("/customer").send();
+    expect(listResponse.status).toBe(200);
+    expect(listResponse.body.customers.length).toBe(arrange.length);
+
+    for (let i = 0; i < arrange.length; i++) {
+      expect(listResponse.body.customers[i].name).toBe(arrange[i].name);
+      expect(listResponse.body.customers[i].address.street).toBe(
+        arrange[i].address.street
+      );
+      expect(listResponse.body.customers[i].address.number).toBe(
+        arrange[i].address.number
+      );
+      expect(listResponse.body.customers[i].address.city).toBe(
+        arrange[i].address.city
+      );
+      expect(listResponse.body.customers[i].address.zip).toBe(
+        arrange[i].address.zip
+      );
+    }
+  });
 });

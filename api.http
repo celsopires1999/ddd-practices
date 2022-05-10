@@ -1,1 +1,19 @@
-POST http://localhost:3000/customer
+POST http://localhost:3000/customer HTTP/1.1
+content-type: application/json
+
+{
+    "name": "John2",
+    "address": {
+        "street": "New Street",
+        "number": 101,
+        "city": "New City",
+        "zip": "10101-101"
+    }
+}
+
+
+###
+
+GET http://localhost:3000/customer
+
+###

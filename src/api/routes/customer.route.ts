@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import CreateCustomerUseCase from "#customer/application/use-cases/create/create-customer.use-case";
 import CustomerRepository from "#customer/infra/db/sequelize/repository/customer.repository";
 import { InputCreateCustomerDto } from "#customer/application/use-cases/create/create-customer.dto";
+import ListCustomerUseCase from "#customer/application/use-cases/list/list-customer.use-case";
 
 export const customerRoute = express.Router();
 
@@ -20,6 +21,18 @@ customerRoute.post("/", async (req: Request, res: Response) => {
 
   try {
     const output = await useCase.execute(customerDto);
+    res.send(output);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+customerRoute.get("/", async (_req: Request, res: Response) => {
+  const repository = new CustomerRepository();
+  const useCase = new ListCustomerUseCase(repository);
+
+  try {
+    const output = await useCase.execute({});
     res.send(output);
   } catch (error) {
     res.status(500).send(error);
