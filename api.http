@@ -14,6 +14,21 @@ content-type: application/json
 
 ###
 
-GET http://localhost:3000/customer
+GET http://localhost:3000/customer HTTP/1.1
+
+###
+
+POST http://localhost:3000/product HTTP/1.1
+content-type: application/json
+
+{
+    "type": "B",
+    "name": "Product 1",
+    "price": 1.01
+}
+
+###
+
+GET http://localhost:3000/product HTTP/1.1
 
 ###
