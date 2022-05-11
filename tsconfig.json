@@ -98,10 +98,10 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "paths": {
-      "#seedwork/*": ["./@seedwork/*"],
-      "#customer/*": ["./customer/*"],
-      "#order/*": ["./order/*"],
-      "#product/*": ["./product/*"]
+      "#seedwork/*": ["./@core/@seedwork/*"],
+      "#customer/*": ["./@core/customer/*"],
+      "#order/*": ["./@core/order/*"],
+      "#product/*": ["./@core/product/*"]
     }
   },
   "include": ["src/"]

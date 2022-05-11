@@ -1,5 +1,5 @@
 import RepositoryInterface from "../../../@seedwork/domain/repository/repository-interface";
-import Product from "../../domain/entity/product";
+import ProductInterface from "../entity/product.interface";
 
 export default interface ProductRepositoryInterface
-  extends RepositoryInterface<Product> {}
+  extends RepositoryInterface<ProductInterface> {}

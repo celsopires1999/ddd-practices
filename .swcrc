@@ -10,10 +10,10 @@
     },
     "baseUrl": "./src",
     "paths": {
-      "#seedwork/*": ["./@seedwork/*"],
-      "#customer/*": ["./customer/*"],
-      "#order/*": ["./order/*"],
-      "#product/*": ["./product/*"]
+      "#seedwork/*": ["./@core/@seedwork/*"],
+      "#customer/*": ["./@core/customer/*"],
+      "#order/*": ["./@core/order/*"],
+      "#product/*": ["./@core/product/*"]
     }
   }
 }
