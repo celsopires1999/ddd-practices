@@ -1,3 +1,6 @@
+import Notification from "#seedwork/domain/notification/notification";
+import NotificationError from "../notification/notification.error";
+
 export interface AddressProperties {
   street: string;
   number: number;
@@ -6,7 +9,10 @@ export interface AddressProperties {
 }
 
 export default class Address {
+  private notification: Notification;
+
   constructor(public readonly props: AddressProperties) {
+    this.notification = new Notification();
     this.validate();
   }
 
@@ -37,16 +43,32 @@ export default class Address {
 
   private validate() {
     if (!this.props.street || this.props.street.length === 0) {
-      throw new Error("street is required");
+      this.notification.addError({
+        context: "address",
+        message: "street is required",
+      });
     }
     if (!this.props.number || this.props.number === 0) {
-      throw new Error("number is required");
+      this.notification.addError({
+        context: "address",
+        message: "number is required",
+      });
     }
     if (!this.props.zip || this.props.zip.length === 0) {
-      throw new Error("zip is required");
+      this.notification.addError({
+        context: "address",
+        message: "zip is required",
+      });
     }
     if (!this.props.city || this.props.city.length === 0) {
-      throw new Error("city is required");
+      this.notification.addError({
+        context: "address",
+        message: "city is required",
+      });
+    }
+
+    if (this.notification.hasError()) {
+      throw new NotificationError(this.notification.errors);
     }
   }
 }

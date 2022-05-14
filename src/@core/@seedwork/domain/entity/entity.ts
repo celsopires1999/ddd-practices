@@ -1,16 +1,24 @@
 import Notification from "../notification/notification";
 
 export abstract class Entity {
-  protected _id: string;
-  protected notification: Notification;
+  private _id: string;
+  private _notification: Notification;
 
   constructor(id: string) {
     this._id = id;
-    this.notification = new Notification();
+    this._notification = new Notification();
   }
 
   get id() {
     return this._id;
+  }
+
+  get notification(): Notification {
+    return this._notification;
+  }
+
+  set notification(notification: Notification) {
+    this._notification = notification;
   }
 }
 

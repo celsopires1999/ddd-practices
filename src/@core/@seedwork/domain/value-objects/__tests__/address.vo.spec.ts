@@ -1,4 +1,4 @@
-import Address, { AddressProperties } from "../address.vo";
+import Address from "../address.vo";
 
 describe("Address Value Object Unit Test", () => {
   it("should create an address value object", () => {

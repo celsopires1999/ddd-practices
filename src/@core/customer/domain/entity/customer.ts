@@ -46,10 +46,18 @@ export default class Customer extends Entity {
 
   changeAddress(address: Address) {
     if (!address && this._active) {
-      throw new Error("Address is mandatory when customer is active");
+      this.notification.addError({
+        context: "customer",
+        message: "Address is mandatory when customer is active",
+      });
+      throw new NotificationError(this.notification.errors);
     }
     if (!(address instanceof Address)) {
-      throw new Error("Address value is invalid");
+      this.notification.addError({
+        context: "customer",
+        message: "Address value is invalid",
+      });
+      throw new NotificationError(this.notification.errors);
     }
 
     this._address = address;
@@ -57,7 +65,11 @@ export default class Customer extends Entity {
 
   removeAddress() {
     if (this._active) {
-      throw new Error("Address cannot be removed when customer is active");
+      this.notification.addError({
+        context: "customer",
+        message: "Address cannot be removed when customer is active",
+      });
+      throw new NotificationError(this.notification.errors);
     }
 
     this._address = null;
@@ -65,14 +77,22 @@ export default class Customer extends Entity {
 
   changeName(name: string) {
     if (!name || name.length === 0) {
-      throw new Error("Name is required");
+      this.notification.addError({
+        context: "customer",
+        message: "Name is required",
+      });
+      throw new NotificationError(this.notification.errors);
     }
     this._name = name;
   }
 
   activate() {
     if (!this._address) {
-      throw new Error("Address is required to activate a customer");
+      this.notification.addError({
+        context: "customer",
+        message: "Address is required to activate a customer",
+      });
+      throw new NotificationError(this.notification.errors);
     }
     this._active = true;
   }
@@ -86,7 +106,7 @@ export default class Customer extends Entity {
   }
 
   private validate() {
-    if (!this._id || this._id.length === 0) {
+    if (!this.id || this.id.length === 0) {
       this.notification.addError({
         context: "customer",
         message: "Id is required",
