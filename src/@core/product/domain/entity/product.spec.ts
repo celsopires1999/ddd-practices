@@ -1,3 +1,4 @@
+import NotificationError from "#seedwork/domain/notification/notification.error";
 import Product from "./product";
 
 describe("Product Unit Tests", () => {
@@ -115,5 +116,50 @@ describe("Product Unit Tests", () => {
     });
     product.changePrice(110);
     expect(product.price).toBe(110);
+  });
+
+  it("should throw error when id, name and price are invalid", () => {
+    expect(
+      () => new Product({ id: null, name: null, price: null })
+    ).toThrowError(
+      "product: Id must be a string, product: Id is required, " +
+        "product: name must be a string, product: name is required, " +
+        "product: price must be a number, product: price is required, product: price must be greater than zero"
+    );
+
+    expect(
+      () => new Product({ id: null, name: null, price: null })
+    ).toThrowError(
+      new NotificationError([
+        {
+          context: "product",
+          message: "Id must be a string",
+        },
+        {
+          context: "product",
+          message: "Id is required",
+        },
+        {
+          context: "product",
+          message: "name must be a string",
+        },
+        {
+          context: "product",
+          message: "name is required",
+        },
+        {
+          context: "product",
+          message: "price must be a number",
+        },
+        {
+          context: "product",
+          message: "price is required",
+        },
+        {
+          context: "product",
+          message: "price must be greater than zero",
+        },
+      ])
+    );
   });
 });

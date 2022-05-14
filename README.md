@@ -14,8 +14,8 @@ Usei o console para logar os erros, portanto ao executar os testes, erros de con
 Execute no terminal `npm run test`.
 Resultado esperado:
 
-- Test Suites: 26 passed, 26 total
-- Tests: 87 passed, 87 total
+- Test Suites: 27 passed, 27 total
+- Tests: 91 passed, 91 total
 
 ## Teste via REST Client
 

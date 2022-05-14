@@ -1,3 +1,5 @@
+import Entity from "#seedwork/domain/entity/entity";
+import NotificationError from "#seedwork/domain/notification/notification.error";
 import ProductInterface from "./product.interface";
 export interface ProductProperties {
   id: string;
@@ -5,9 +7,10 @@ export interface ProductProperties {
   price: number;
 }
 
-export default class Product implements ProductInterface {
+export default class Product extends Entity implements ProductInterface {
   constructor(public readonly props: ProductProperties) {
-    Product.validate(props);
+    super(props.id);
+    this.validate(props);
   }
 
   get id(): string {
@@ -23,52 +26,83 @@ export default class Product implements ProductInterface {
   }
 
   changeName(name: string) {
-    Product.validateName(name);
+    this.validateName(name);
+    if (this.notification.hasError()) {
+      throw new NotificationError(this.notification.errors);
+    }
     this.props.name = name;
   }
 
   changePrice(price: number) {
-    Product.validatePrice(price);
+    this.validatePrice(price);
+    if (this.notification.hasError()) {
+      throw new NotificationError(this.notification.errors);
+    }
     this.props.price = price;
   }
 
-  private static validate(props: ProductProperties) {
-    Product.validateId(props.id);
-    Product.validateName(props.name);
-    Product.validatePrice(props.price);
+  private validate(props: ProductProperties) {
+    this.validateId(props.id);
+    this.validateName(props.name);
+    this.validatePrice(props.price);
+
+    if (this.notification.hasError()) {
+      throw new NotificationError(this.notification.errors);
+    }
   }
 
-  private static validateId(id: string) {
+  private validateId(id: string) {
     if (typeof id !== "string") {
-      throw new Error("Id must be a string");
+      this.notification.addError({
+        context: "product",
+        message: "Id must be a string",
+      });
     }
-    if (Product.isEmpty(id) || id.length === 0) {
-      throw new Error("Id is required");
+    if (this.isEmpty(id) || id.length === 0) {
+      this.notification.addError({
+        context: "product",
+        message: "Id is required",
+      });
     }
   }
 
-  private static validateName(name: string) {
+  private validateName(name: string) {
     if (typeof name !== "string") {
-      throw new Error("name must be a string");
+      this.notification.addError({
+        context: "product",
+        message: "name must be a string",
+      });
     }
-    if (Product.isEmpty(name) || name.length === 0) {
-      throw new Error("name is required");
+    if (this.isEmpty(name) || name.length === 0) {
+      this.notification.addError({
+        context: "product",
+        message: "name is required",
+      });
     }
   }
 
-  private static validatePrice(price: number) {
+  private validatePrice(price: number) {
     if (typeof price !== "number") {
-      throw new Error("price must be a number");
+      this.notification.addError({
+        context: "product",
+        message: "price must be a number",
+      });
     }
-    if (Product.isEmpty(price) || price === 0) {
-      throw new Error("price is required");
+    if (this.isEmpty(price) || price === 0) {
+      this.notification.addError({
+        context: "product",
+        message: "price is required",
+      });
     }
     if (price <= 0) {
-      throw new Error("price must be greater than zero");
+      this.notification.addError({
+        context: "product",
+        message: "price must be greater than zero",
+      });
     }
   }
 
-  private static isEmpty(value: any): boolean {
+  private isEmpty(value: any): boolean {
     return value === null || value === undefined;
   }
 }

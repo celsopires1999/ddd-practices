@@ -1,3 +1,4 @@
+import NotificationError from "#seedwork/domain/notification/notification.error";
 import Address from "../../../@seedwork/domain/value-objects/address.vo";
 import Customer, { CustomerProperties } from "./customer";
 
@@ -9,7 +10,12 @@ describe("Customer Unit Tests", () => {
       { id: undefined, name: "Customer Name" },
     ];
     arrange.forEach((item) => {
-      expect(() => new Customer(item)).toThrowError("Id is required");
+      expect(() => new Customer(item)).toThrowError(
+        new NotificationError([
+          { context: "customer", message: "Id is required" },
+        ])
+      );
+      expect(() => new Customer(item)).toThrowError("customer: Id is required");
     });
   });
 
@@ -20,8 +26,28 @@ describe("Customer Unit Tests", () => {
       { id: "123", name: undefined },
     ];
     arrange.forEach((item) => {
-      expect(() => new Customer(item)).toThrowError("Name is required");
+      expect(() => new Customer(item)).toThrowError(
+        new NotificationError([
+          { context: "customer", message: "Name is required" },
+        ])
+      );
+      expect(() => new Customer(item)).toThrowError(
+        "customer: Name is required"
+      );
     });
+  });
+
+  it("should throw an error when id and name are empty", () => {
+    expect(() => new Customer({ id: null, name: null })).toThrowError(
+      new NotificationError([
+        { context: "customer", message: "Id is required" },
+        { context: "customer", message: "Name is required" },
+      ])
+    );
+
+    expect(() => new Customer({ id: null, name: null })).toThrowError(
+      "customer: Id is required, customer: Name is required"
+    );
   });
 
   it("should create a customer", () => {
