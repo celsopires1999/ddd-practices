@@ -27,66 +27,25 @@ export default class ProductB extends Entity implements ProductInterface {
   }
 
   changeName(name: string) {
-    this.validateName(name);
+    this.props.name = name;
+    this.validate();
     if (this.notification.hasError()) {
       throw new NotificationError(this.notification.errors);
     }
-    this.props.name = name;
   }
 
   changePrice(price: number) {
-    this.validatePrice(price);
+    this.props.price = price;
+    this.validate();
     if (this.notification.hasError()) {
       throw new NotificationError(this.notification.errors);
     }
-    this.props.price = price;
   }
 
   private validate() {
     ProductValidatorFactory.create().validate(this);
-
     if (this.notification.hasError()) {
       throw new NotificationError(this.notification.errors);
     }
-  }
-
-  private validateName(name: string) {
-    if (typeof name !== "string") {
-      this.notification.addError({
-        context: "product",
-        message: "name must be a string",
-      });
-    }
-    if (this.isEmpty(name) || name.length === 0) {
-      this.notification.addError({
-        context: "product",
-        message: "name is required",
-      });
-    }
-  }
-
-  private validatePrice(price: number) {
-    if (typeof price !== "number") {
-      this.notification.addError({
-        context: "product",
-        message: "price must be a number",
-      });
-    }
-    if (this.isEmpty(price) || price === 0) {
-      this.notification.addError({
-        context: "product",
-        message: "price is required",
-      });
-    }
-    if (price <= 0) {
-      this.notification.addError({
-        context: "product",
-        message: "price must be greater than zero",
-      });
-    }
-  }
-
-  private isEmpty(value: any): boolean {
-    return value === null || value === undefined;
   }
 }

@@ -125,7 +125,9 @@ describe("Product Unit Tests", () => {
       name: "Original Name",
       price: 100,
     });
-    expect(() => product.changePrice(0)).toThrowError("price is required");
+    expect(() => product.changePrice(0)).toThrowError(
+      "product: price must be greater than 0"
+    );
   });
 
   it("should change a product name", () => {
