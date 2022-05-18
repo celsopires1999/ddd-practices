@@ -1,6 +1,7 @@
 import Entity from "#seedwork/domain/entity/entity";
 import NotificationError from "#seedwork/domain/notification/notification.error";
 import Address from "#seedwork/domain/value-objects/address.vo";
+import CustomerValidatorFactory from "../factory/customer-validator.factory";
 
 export interface CustomerProperties {
   id: string;
@@ -106,19 +107,7 @@ export default class Customer extends Entity {
   }
 
   private validate() {
-    if (!this.id || this.id.length === 0) {
-      this.notification.addError({
-        context: "customer",
-        message: "Id is required",
-      });
-    }
-
-    if (!this._name || this._name.length === 0) {
-      this.notification.addError({
-        context: "customer",
-        message: "Name is required",
-      });
-    }
+    CustomerValidatorFactory.create().validate(this);
 
     if (this.notification.hasError()) {
       throw new NotificationError(this.notification.errors);

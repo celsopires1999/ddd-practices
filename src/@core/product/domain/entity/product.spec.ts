@@ -5,11 +5,26 @@ describe("Product Unit Tests", () => {
   it("should throw an error when id is invalid", () => {
     const arrange: { id: string; error: string }[] = [
       { id: "", error: "Id is required" },
-      { id: null, error: "Id must be a string" },
-      { id: undefined, error: "Id must be a string" },
-      { id: [] as any, error: "Id must be a string" },
-      { id: {} as any, error: "Id must be a string" },
-      { id: new Date() as any, error: "Id must be a string" },
+      {
+        id: null,
+        error:
+          "product: id must be a `string` type, but the final value was: `null`.",
+      },
+      {
+        id: undefined,
+        error: "product: Id is required",
+      },
+      {
+        id: [] as any,
+        error:
+          "product: id must be a `string` type, but the final value was: `[]`.",
+      },
+      {
+        id: {} as any,
+        error:
+          "product: id must be a `string` type, but the final value was: `{}`.",
+      },
+      // { id: new Date() as any, error: "Id must be a string" },
     ];
     arrange.forEach((item) => {
       try {
@@ -30,11 +45,23 @@ describe("Product Unit Tests", () => {
   it("should throw an error when name is invalid", () => {
     const arrange: { name: string; error: string }[] = [
       { name: "", error: "name is required" },
-      { name: null, error: "name must be a string" },
-      { name: undefined, error: "name must be a string" },
-      { name: [] as any, error: "name must be a string" },
-      { name: {} as any, error: "name must be a string" },
-      { name: new Date() as any, error: "name must be a string" },
+      {
+        name: null,
+        error:
+          "product: name must be a `string` type, but the final value was: `null`.",
+      },
+      { name: undefined, error: "product: name is required" },
+      {
+        name: [] as any,
+        error:
+          "product: name must be a `string` type, but the final value was: `[]`.",
+      },
+      {
+        name: {} as any,
+        error:
+          "product: name must be a `string` type, but the final value was: `{}`.",
+      },
+      // { name: new Date() as any, error: "name must be a string" },
     ];
     arrange.forEach((item) => {
       try {
@@ -54,14 +81,17 @@ describe("Product Unit Tests", () => {
   });
   it("should throw an error when price is invalid", () => {
     const arrange: { price: number; error: string }[] = [
-      { price: 0, error: "price is required" },
-      { price: -1, error: "price must be greater than zero" },
-      { price: "", error: "price must be a number" },
-      { price: null, error: "price must be a number" },
-      { price: undefined, error: "price must be a number" },
-      { price: [] as any, error: "price must be a number" },
-      { price: {} as any, error: "price must be a number" },
-      { price: new Date() as any, error: "price must be a number" },
+      { price: 0, error: "product: price must be greater than 0" },
+      { price: -1, error: "product: price must be greater than 0" },
+      { price: "", error: "product: price must be a `number` type" },
+      { price: null, error: "product: price must be a `number` type" },
+      { price: undefined, error: "product: price is required" },
+      { price: [] as any, error: "product: price must be a `number` type" },
+      { price: {} as any, error: "product: price must be a `number` type" },
+      {
+        price: new Date() as any,
+        error: "product: price must be a `number` type",
+      },
     ];
     arrange.forEach((item) => {
       try {
@@ -119,29 +149,15 @@ describe("Product Unit Tests", () => {
   });
 
   it("should throw error when id, name and price are invalid", () => {
-    expect(
-      () => new Product({ id: null, name: null, price: null })
-    ).toThrowError(
-      "product: Id must be a string, product: Id is required, " +
-        "product: name must be a string, product: name is required, " +
-        "product: price must be a number, product: price is required, product: price must be greater than zero"
+    expect(() => new Product({ id: "", name: "", price: 0 })).toThrowError(
+      "product: Id is required, product: name is required, product: price must be greater than 0"
     );
 
-    expect(
-      () => new Product({ id: null, name: null, price: null })
-    ).toThrowError(
+    expect(() => new Product({ id: "", name: "", price: 0 })).toThrowError(
       new NotificationError([
         {
           context: "product",
-          message: "Id must be a string",
-        },
-        {
-          context: "product",
           message: "Id is required",
-        },
-        {
-          context: "product",
-          message: "name must be a string",
         },
         {
           context: "product",
@@ -149,15 +165,7 @@ describe("Product Unit Tests", () => {
         },
         {
           context: "product",
-          message: "price must be a number",
-        },
-        {
-          context: "product",
-          message: "price is required",
-        },
-        {
-          context: "product",
-          message: "price must be greater than zero",
+          message: "price must be greater than 0",
         },
       ])
     );

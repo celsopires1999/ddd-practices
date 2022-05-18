@@ -73,6 +73,8 @@ describe("CreateProductUseCase Unit Tests", () => {
       name: "Product 3",
       price: 0,
     };
-    expect(useCase.execute(input)).rejects.toThrow("price is required");
+    expect(useCase.execute(input)).rejects.toThrow(
+      "product: price must be greater than 0"
+    );
   });
 });

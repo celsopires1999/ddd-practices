@@ -1,5 +1,4 @@
-import Notification from "../notification/notification";
-
+import Notification from "#seedwork/domain/notification/notification";
 export abstract class Entity {
   private _id: string;
   private _notification: Notification;

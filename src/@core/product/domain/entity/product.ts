@@ -1,5 +1,6 @@
 import Entity from "#seedwork/domain/entity/entity";
 import NotificationError from "#seedwork/domain/notification/notification.error";
+import ProductValidatorFactory from "../factory/product-validator.factory";
 import ProductInterface from "./product.interface";
 export interface ProductProperties {
   id: string;
@@ -10,7 +11,7 @@ export interface ProductProperties {
 export default class Product extends Entity implements ProductInterface {
   constructor(public readonly props: ProductProperties) {
     super(props.id);
-    this.validate(props);
+    this.validate();
   }
 
   get id(): string {
@@ -41,28 +42,10 @@ export default class Product extends Entity implements ProductInterface {
     this.props.price = price;
   }
 
-  private validate(props: ProductProperties) {
-    this.validateId(props.id);
-    this.validateName(props.name);
-    this.validatePrice(props.price);
-
+  private validate() {
+    ProductValidatorFactory.create().validate(this);
     if (this.notification.hasError()) {
       throw new NotificationError(this.notification.errors);
-    }
-  }
-
-  private validateId(id: string) {
-    if (typeof id !== "string") {
-      this.notification.addError({
-        context: "product",
-        message: "Id must be a string",
-      });
-    }
-    if (this.isEmpty(id) || id.length === 0) {
-      this.notification.addError({
-        context: "product",
-        message: "Id is required",
-      });
     }
   }
 
