@@ -84,4 +84,56 @@ describe("Customer E2E Tests", () => {
       );
     }
   });
+
+  it("should list all customer in XML format", async () => {
+    const arrange = [
+      {
+        name: "John",
+        address: {
+          street: "New John Street",
+          number: 101,
+          city: "New John City",
+          zip: "10101-101",
+        },
+      },
+      {
+        name: "Jane",
+        address: {
+          street: "New Jane Street",
+          number: 202,
+          city: "New Jane City",
+          zip: "20202-202",
+        },
+      },
+    ];
+
+    for (const item of arrange) {
+      const response = await request(app).post("/customer").send(item);
+      expect(response.status).toBe(200);
+    }
+
+    const listResponse = await request(app)
+      .get("/customer")
+      .set("Accept", "application/xml")
+      .send();
+
+    expect(listResponse.status).toBe(200);
+    expect(listResponse.text).toContain(
+      `<?xml version="1.0" encoding="UTF-8"?>`
+    );
+    expect(listResponse.text).toContain("<customers>");
+    expect(listResponse.text).toContain("<name>John</name>");
+    expect(listResponse.text).toContain("<address>");
+    expect(listResponse.text).toContain("<street>New John Street</street>");
+    expect(listResponse.text).toContain("<number>101</number>");
+    expect(listResponse.text).toContain("<city>New John City</city>");
+    expect(listResponse.text).toContain("<zip>10101-101</zip>");
+    expect(listResponse.text).toContain("</address>");
+    expect(listResponse.text).toContain("<name>Jane</name>");
+    expect(listResponse.text).toContain("<street>New Jane Street</street>");
+    expect(listResponse.text).toContain("<number>202</number>");
+    expect(listResponse.text).toContain("<city>New Jane City</city>");
+    expect(listResponse.text).toContain("<zip>20202-202</zip>");
+    expect(listResponse.text).toContain("</customers>");
+  });
 });
