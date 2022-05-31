@@ -26,3 +26,5 @@ export class UpdateProductUseCase {
     };
   }
 }
+
+export default UpdateProductUseCase;
